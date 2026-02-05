@@ -4,6 +4,7 @@
 |--------------------------------------------------------------------------
 | Test Case
 |--------------------------------------------------------------------------
+|
+| Testbench binding is configured in tests/Pest.php at the project root.
+|
 */
-
-uses(Orchestra\Testbench\TestCase::class)->in(__DIR__);
