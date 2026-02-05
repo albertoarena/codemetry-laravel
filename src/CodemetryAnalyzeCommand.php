@@ -31,7 +31,8 @@ final class CodemetryAnalyzeCommand extends Command
 
         try {
             $request = $this->buildRequest();
-            $result = $analyzer->analyze($repoPath, $request);
+            $externalConfig = $this->buildExternalConfig();
+            $result = $analyzer->analyze($repoPath, $request, $externalConfig);
         } catch (\Throwable $e) {
             $this->error($e->getMessage());
 
@@ -81,6 +82,25 @@ final class CodemetryAnalyzeCommand extends Command
             aiEngine: $config['ai']['engine'] ?? 'openai',
             outputFormat: $this->option('format'),
         );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildExternalConfig(): array
+    {
+        $config = config('codemetry', []);
+        $aiConfig = $config['ai'] ?? [];
+
+        return [
+            'keywords' => $config['keywords'] ?? [],
+            'ai' => [
+                'api_key' => $aiConfig['api_key'] ?? null,
+                'model' => $aiConfig['model'] ?? null,
+                'base_url' => $aiConfig['base_url'] ?? null,
+                'timeout' => $aiConfig['timeout'] ?? 30,
+            ],
+        ];
     }
 
     private function renderTable(\Codemetry\Core\Domain\AnalysisResult $result): void
