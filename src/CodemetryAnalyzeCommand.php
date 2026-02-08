@@ -133,6 +133,7 @@ final class CodemetryAnalyzeCommand extends Command
                 'model' => $aiConfig['model'] ?? null,
                 'base_url' => $aiConfig['base_url'] ?? null,
                 'timeout' => $aiConfig['timeout'] ?? 30,
+                'batch_size' => (int) ($aiConfig['batch_size'] ?? 10),
             ],
         ];
     }
