@@ -56,7 +56,7 @@ final class CodemetryAnalyzeCommand extends Command
         }
 
         // Warn if AI was requested but unavailable
-        $this->warnIfAiUnavailable($request, $result);
+        $this->warnIfAiUnavailable($request, $result, $analyzer);
 
         if ($format === 'json') {
             $this->line($result->toJson(JSON_PRETTY_PRINT));
@@ -140,7 +140,7 @@ final class CodemetryAnalyzeCommand extends Command
     /**
      * Warn if AI was requested but unavailable.
      */
-    private function warnIfAiUnavailable(AnalysisRequest $request, AnalysisResult $result): void
+    private function warnIfAiUnavailable(AnalysisRequest $request, AnalysisResult $result, Analyzer $analyzer): void
     {
         if (!$request->aiEnabled || empty($result->windows)) {
             return;
@@ -149,7 +149,13 @@ final class CodemetryAnalyzeCommand extends Command
         foreach ($result->windows as $mood) {
             if (in_array(Confounder::AI_UNAVAILABLE, $mood->confounders, true)) {
                 $this->warn('AI enhancement was requested but unavailable.');
-                $this->line('  <fg=yellow>Hint:</> Set CODEMETRY_AI_API_KEY in your .env file.');
+
+                $lastError = $analyzer->getLastAiError();
+                if ($lastError !== null) {
+                    $this->line("  <fg=yellow>Error:</> {$lastError}");
+                } else {
+                    $this->line('  <fg=yellow>Hint:</> Set CODEMETRY_AI_API_KEY in your .env file.');
+                }
                 $this->newLine();
 
                 return;
