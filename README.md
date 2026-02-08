@@ -18,11 +18,29 @@ This package depends on [codemetry/core](https://github.com/albertoarena/codemet
 composer require codemetry/laravel
 ```
 
+This automatically installs `codemetry/core` as a dependency.
+
 Publish the configuration file:
 
 ```bash
 php artisan vendor:publish --tag=codemetry-config
 ```
+
+## Upgrading
+
+Both `codemetry/laravel` and `codemetry/core` must be updated together to ensure compatibility:
+
+```bash
+composer update "codemetry/*"
+```
+
+Or explicitly:
+
+```bash
+composer update codemetry/laravel codemetry/core
+```
+
+> **Note:** Running `composer update codemetry/laravel` alone may not work because both packages are versioned together and require matching versions.
 
 ## Usage
 
