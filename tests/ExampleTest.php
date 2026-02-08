@@ -165,6 +165,48 @@ test('command passes author filter to analyzer', function () {
     destroyLaravelRepo($dir);
 });
 
+// --- AI engine option ---
+
+test('command accepts ai-engine option', function () {
+    $dir = createLaravelTestRepo();
+
+    commitInRepo($dir, 'init.txt', 'init', 'init', '2024-01-10T10:00:00+00:00');
+    commitInRepo($dir, 'file.php', "<?php\necho 1;\n", 'feat: add file', '2024-01-15T10:00:00+00:00');
+
+    $this->artisan('codemetry:analyze', [
+        '--repo' => $dir,
+        '--since' => '2024-01-15',
+        '--until' => '2024-01-16',
+        '--format' => 'json',
+        '--baseline-days' => 3,
+        '--ai-engine' => 'anthropic',
+    ])->expectsOutputToContain('"ai_engine": "anthropic"')
+        ->assertSuccessful();
+
+    destroyLaravelRepo($dir);
+});
+
+test('command ai-engine option overrides config', function () {
+    $dir = createLaravelTestRepo();
+
+    commitInRepo($dir, 'init.txt', 'init', 'init', '2024-01-10T10:00:00+00:00');
+    commitInRepo($dir, 'file.php', "<?php\necho 1;\n", 'feat: add file', '2024-01-15T10:00:00+00:00');
+
+    config()->set('codemetry.ai.engine', 'openai');
+
+    $this->artisan('codemetry:analyze', [
+        '--repo' => $dir,
+        '--since' => '2024-01-15',
+        '--until' => '2024-01-16',
+        '--format' => 'json',
+        '--baseline-days' => 3,
+        '--ai-engine' => 'deepseek',
+    ])->expectsOutputToContain('"ai_engine": "deepseek"')
+        ->assertSuccessful();
+
+    destroyLaravelRepo($dir);
+});
+
 // --- Config override ---
 
 test('command uses config defaults when options not provided', function () {

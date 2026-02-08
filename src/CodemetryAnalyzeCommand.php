@@ -21,6 +21,7 @@ final class CodemetryAnalyzeCommand extends Command
         {--branch= : Filter by branch}
         {--format=table : Output format (table or json)}
         {--ai= : Enable AI explanation (0 or 1)}
+        {--ai-engine= : AI engine to use (openai, anthropic, deepseek, google)}
         {--baseline-days= : Override baseline days}
         {--follow-up-horizon= : Override follow-up horizon days}
         {--repo= : Repository path (defaults to base_path())}';
@@ -83,6 +84,8 @@ final class CodemetryAnalyzeCommand extends Command
             ? (bool) $this->option('ai')
             : ($config['ai']['enabled'] ?? false);
 
+        $aiEngine = $this->option('ai-engine') ?: ($config['ai']['engine'] ?? 'openai');
+
         return new AnalysisRequest(
             since: $since,
             until: $until,
@@ -92,7 +95,7 @@ final class CodemetryAnalyzeCommand extends Command
             baselineDays: (int) ($this->option('baseline-days') ?: ($config['baseline_days'] ?? 56)),
             followUpHorizonDays: (int) ($this->option('follow-up-horizon') ?: ($config['follow_up_horizon_days'] ?? 3)),
             aiEnabled: $aiEnabled,
-            aiEngine: $config['ai']['engine'] ?? 'openai',
+            aiEngine: $aiEngine,
             outputFormat: $this->option('format'),
         );
     }

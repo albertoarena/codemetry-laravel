@@ -46,12 +46,17 @@ return [
     | Optional AI-powered explanation layer. Disabled by default.
     | Engines: openai, anthropic, deepseek, google
     |
+    | base_url: Custom API endpoint for self-hosted models or proxies
+    | timeout: Request timeout in seconds
+    |
     */
     'ai' => [
         'enabled' => false,
         'engine' => env('CODEMETRY_AI_ENGINE', 'openai'),
         'api_key' => env('CODEMETRY_AI_API_KEY'),
         'model' => env('CODEMETRY_AI_MODEL'),
+        'base_url' => env('CODEMETRY_AI_BASE_URL'),
+        'timeout' => env('CODEMETRY_AI_TIMEOUT', 30),
     ],
 
 ];
