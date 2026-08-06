@@ -103,6 +103,12 @@ When AI is requested but unavailable (missing keys, API failure), analysis conti
 - All analysis runs locally via Git commands against your repository.
 - No data is sent to external services unless AI engines are explicitly enabled.
 
+## 📬 Stay updated
+
+Occasional emails on Laravel tooling and AI-assisted development: new releases, packages, and write-ups. No spam, unsubscribe anytime.
+
+**[Subscribe to the newsletter →](https://albertoarena.it/subscribe/?utm_source=codemetry&utm_medium=readme&utm_campaign=newsletter&utm_content=codemetry-laravel)**
+
 ## License
 
 MIT
