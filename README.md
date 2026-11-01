@@ -8,8 +8,8 @@ This package depends on [codemetry/core](https://github.com/albertoarena/codemet
 
 ## Requirements
 
-- PHP 8.2+
-- Laravel 11.x or 12.x
+- PHP 8.3+
+- Laravel 12.x or 13.x
 - Git
 
 ## Installation
